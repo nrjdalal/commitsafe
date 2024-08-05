@@ -81,7 +81,9 @@ commitsafe -l .env .env.local ...
 bun add -D commitsafe lint-staged simple-git-hooks
 ```
 
-2. Add the following to your `package.json` and run `bun run prepare`
+2. Run `commitsafe -e .env` once to add a encryption key
+
+3. Add the following to your `package.json` and run `bun run prepare`
 
 ```json
 {

@@ -1,6 +1,6 @@
 {
   "name": "commitsafe",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "commitsafe is a CLI tool to help you not to worry about exposing your secrets in your .env files when you commit them to your repository",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

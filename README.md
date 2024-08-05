@@ -2,6 +2,17 @@
 
 > NPM: [commitsafe](https://www.npmjs.com/package/commitsafe)
 
+## How to install
+
+```bash
+# using npm
+npm install -d commitsafe
+# using bun
+bun add -d commitsafe
+```
+
+## CLI or `commitsafe --help`
+
 ```
 Usage: commitsafe [options] <files...>
 

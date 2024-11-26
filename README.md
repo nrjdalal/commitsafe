@@ -103,10 +103,11 @@ bun add -D commitsafe lint-staged simple-git-hooks
     "prepare": "bunx simple-git-hooks"
   },
   "lint-staged": {
-    ".env*": ["commitsafe -e"]
+    ".env": ["commitsafe -e"]
   },
   "simple-git-hooks": {
-    "pre-commit": "bunx lint-staged"
+    "pre-commit": "bunx lint-staged",
+    "post-commit": "bunx commitsafe -d .env"
   }
 }
 ```

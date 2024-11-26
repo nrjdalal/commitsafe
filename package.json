@@ -1,6 +1,6 @@
 {
   "name": "commitsafe",
-  "version": "1.2.6",
+  "version": "2.0.0",
   "description": "commitsafe is a CLI tool to help you not to worry about exposing your secrets in your .env files when you commit them to your repository",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,7 +9,9 @@
   },
   "scripts": {
     "build": "npx tsc",
-    "test": "bun run build && node dist/index.js -e .env .env.local",
+    "test": "bun run build && node dist/index.js -e",
+    "test:encrypt": "bun run build && node dist/index.js -e .env .env.local",
+    "test:decrypt": "bun run build && node dist/index.js -d .env .env.local",
     "list": "bun run build && node dist/index.js -l .env .env.local",
     "pub:latest": "pnpm build && pnpm publish --no-git-checks --access public",
     "prepare": "bunx simple-git-hooks > /dev/null 2>&1"
@@ -21,14 +23,12 @@
   "dependencies": {
     "@inquirer/password": "^2.1.17",
     "commander": "^12.1.0",
-    "crypto-js": "^4.2.0",
     "envfile": "^7.1.0",
     "nanoid": "^5.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20.14.11",
     "lint-staged": "^15.2.7",
     "prettier": "^3.3.3",
@@ -44,7 +44,8 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "bunx lint-staged --verbose && echo"
+    "pre-commit": "bunx lint-staged --verbose && echo",
+    "post-commit": "bun run test:decrypt"
   },
   "repository": {
     "type": "git",

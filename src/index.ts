@@ -1,10 +1,10 @@
 #!/usr/bin/env node
+import crypto from 'crypto'
 import fs from 'fs/promises'
 import os from 'os'
 import path from 'path'
 import password from '@inquirer/password'
 import { program } from 'commander'
-import CryptoJS from 'crypto-js'
 import { parse } from 'envfile'
 import { customAlphabet } from 'nanoid'
 import { z } from 'zod'
@@ -151,13 +151,20 @@ async function main() {
           if (Object.keys(isEnvLine).length) {
             const [key, value] = Object.entries(isEnvLine)[0]
 
+            const iv = crypto.randomBytes(16)
+            const keyBuffer = crypto.scryptSync(keys[file], 'salt', 32)
+
             if (action === 'encrypt') {
               if (!value.startsWith('encrypted::')) {
+                const cipher = crypto.createCipheriv(
+                  'aes-256-cbc',
+                  keyBuffer,
+                  iv,
+                )
+                let encrypted = cipher.update(value, 'utf8', 'hex')
+                encrypted += cipher.final('hex')
                 newFile.push(
-                  `${key}=encrypted::${CryptoJS.AES.encrypt(
-                    value,
-                    keys[file],
-                  ).toString()}`,
+                  `${key}=encrypted::${iv.toString('hex')}:${encrypted}`,
                 )
               } else {
                 newFile.push(lines[line])
@@ -166,12 +173,17 @@ async function main() {
 
             if (action === 'decrypt') {
               if (value.startsWith('encrypted::')) {
-                newFile.push(
-                  `${key}=${CryptoJS.AES.decrypt(
-                    value.replace('encrypted::', ''),
-                    keys[file],
-                  ).toString(CryptoJS.enc.Utf8)}`,
+                const [ivHex, encrypted] = value
+                  .replace('encrypted::', '')
+                  .split(':')
+                const decipher = crypto.createDecipheriv(
+                  'aes-256-cbc',
+                  keyBuffer,
+                  Buffer.from(ivHex, 'hex'),
                 )
+                let decrypted = decipher.update(encrypted, 'hex', 'utf8')
+                decrypted += decipher.final('utf8')
+                newFile.push(`${key}=${decrypted}`)
               } else {
                 newFile.push(lines[line])
               }

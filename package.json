@@ -13,7 +13,7 @@
     "test:encrypt": "bun run build && node dist/index.js -e .env .env.local",
     "test:decrypt": "bun run build && node dist/index.js -d .env .env.local",
     "list": "bun run build && node dist/index.js -l .env .env.local",
-    "release": "bun run build && npx np",
+    "release": "bun run build && npx np --no-tests",
     "prepare": "bunx simple-git-hooks > /dev/null 2>&1"
   },
   "files": [

@@ -1,113 +1,150 @@
-# commitsafe - a CLI tool to help you not to worry about exposing your secrets in your .env files when you commit them to your repository
+# commitsafe
 
-> NPM: [commitsafe](https://www.npmjs.com/package/commitsafe)
+> A CLI tool designed to safeguard against accidentally exposing your secrets in `.env` files when committing to your repository.
 
-## How to install
+- **NPM Package:** [commitsafe](https://www.npmjs.com/package/commitsafe)
+
+## What's New in Version 2.0.0?
+
+- Enhanced Git hooks integration for seamless operation.
+- Transitioned encryption/decryption backend from `npm:crypto-js` to the efficient `node:crypto` module.
+
+## Installation
+
+You can install `commitsafe` using either npm or bun:
 
 ```bash
-# using npm
-npm install -d commitsafe
-# using bun
-bun add -d commitsafe
+# Using npm
+npm install --save-dev commitsafe
 ```
 
-## CLI or `commitsafe --help`
+```bash
+# Using bun
+bun add --dev commitsafe
+```
+
+## Usage
+
+`commitsafe` enables encryption and decryption of environment variables within files. Run `commitsafe --help` for command-line interface details:
 
 ```
 Usage: commitsafe [options] <files...>
 
-encrypt and decrypt environment variables in a file
+Encrypt and decrypt environment variables in a file.
 
 Arguments:
-  files            Files to encrypt or decrypt
+  <files...>       Files to encrypt or decrypt
 
 Options:
-  -l, --list       list given files and their keys
-  -e, --encrypt    encrypt environment variables in a file
-  -d, --decrypt    decrypt environment variables in a file
-  -k, --key <key>  optional: key to encrypt or decrypt environment variables, defaults to a keys stored in ~/.commitsafe
-  -h, --help       display help for command
+  -l, --list       List files and their corresponding encryption keys
+  -e, --encrypt    Encrypt environment variables in a file
+  -d, --decrypt    Decrypt environment variables in a file
+  -k, --key <key>  Optional: Specify the encryption/decryption key. By default, commitsafe uses keys stored in ~/.commitsafe
+  -h, --help       Display help for command
 ```
 
-## What it does
+## How It Works
+
+- Encrypts specified environment variables in `.env` files.
+- Securely decrypts the variables back when needed.
+
+Example:
 
 ```env
-# original .env file
+# Original .env file
 HELLO=world
 
-# after running `commitsafe -e .env`
+# After running `commitsafe -e .env`
 HELLO=encrypted::U2FsdGVkX1/A1PgtAOSvOKQjs5CgGX+Y2gXGahVkgHc=
 
-# after running `commitsafe -d .env`
+# After running `commitsafe -d .env`
 HELLO=world
 ```
 
-## How to use
+## Instructions
 
-### Single file
+### Encrypting/Decrypting a Single File
 
 ```bash
-# encryption
+# Encrypt a single .env file
 commitsafe -e .env
 
-# decryption
+# Decrypt a single .env file
 commitsafe -d .env
 ```
 
-### Multiple files
+### Encrypting/Decrypting Multiple Files
 
 ```bash
-# encryption
+# Encrypt multiple .env files
 commitsafe -e .env .env.local ...
 
-# decryption
+# Decrypt multiple .env files
 commitsafe -d .env .env.local ...
 ```
 
-### Using a key (useful for CI/CD)
+### Using a Specific Key (Ideal for CI/CD Environments)
 
 ```bash
-# encryption
+# Encrypt using a specific key
 commitsafe -e .env -k my-secret-key
 
-# decryption
+# Decrypt using a specific key
 commitsafe -d .env -k my-secret-key
 ```
 
-### List files and their keys
+### Listing Files and Their Encryption Keys
 
 ```bash
 commitsafe -l .env .env.local ...
 ```
 
+## Best Practices: Committing `.env` Files Safely
+
+To automate the safe management of `.env` files using Git hooks, follow these steps:
+
+1. **Install necessary development dependencies:**
+
+   ```bash
+   bun add -D commitsafe lint-staged simple-git-hooks
+   ```
+
+2. **Encrypt your `.env` file initially to set up an encryption key:**
+
+   ```bash
+   commitsafe -e .env
+   ```
+
+3. **Configure Git hooks and lint-staged in your `package.json`:**
+
+   Add the following scripts to automate pre-commit encryption and post-commit decryption:
+
+   ```json
+   // In package.json
+   {
+     "scripts": {
+       "prepare": "bunx simple-git-hooks"
+     },
+     "lint-staged": {
+       ".env": ["commitsafe -e"]
+     },
+     "simple-git-hooks": {
+       "pre-commit": "bunx lint-staged",
+       "post-commit": "bunx commitsafe -d .env"
+     }
+   }
+   ```
+
+   Then, apply the hook configuration with:
+
+   ```bash
+   bun run prepare
+   ```
+
 ---
 
-## How to easily commit your .env files without worrying about exposing your secrets
+By leveraging `commitsafe`, you can confidently manage your `.env` files by ensuring that sensitive information remains encrypted, reducing the risk of accidental exposure.
 
-### Using pre-commit hooks with lint-staged and simple-git-hooks
+For more details, visit the [GitHub repository](https://github.com/nrjdalal/commitsafe). If you encounter issues, please report them [here](https://github.com/nrjdalal/commitsafe/issues).
 
-1. Install the required dev dependencies
-
-```bash
-bun add -D commitsafe lint-staged simple-git-hooks
-```
-
-2. Run `commitsafe -e .env` once to add a encryption key
-
-3. Add the following to your `package.json` and run `bun run prepare`
-
-```json
-{
-  // ... package.json
-  "scripts": {
-    "prepare": "bunx simple-git-hooks"
-  },
-  "lint-staged": {
-    ".env": ["commitsafe -e"]
-  },
-  "simple-git-hooks": {
-    "pre-commit": "bunx lint-staged",
-    "post-commit": "bunx commitsafe -d .env"
-  }
-}
-```
+This project is licensed under the MIT License.

@@ -37,7 +37,7 @@
   },
   "lint-staged": {
     ".env*": [
-      "bun run test -e"
+      "bun run test"
     ],
     "*": [
       "prettier --write --ignore-unknown"

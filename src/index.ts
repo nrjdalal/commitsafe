@@ -161,10 +161,10 @@ async function main() {
                   keyBuffer,
                   iv,
                 )
-                let encrypted = cipher.update(value, 'utf8', 'hex')
-                encrypted += cipher.final('hex')
+                let encrypted = cipher.update(value, 'utf8', 'base64')
+                encrypted += cipher.final('base64')
                 newFile.push(
-                  `${key}=encrypted::${iv.toString('hex')}:${encrypted}`,
+                  `${key}=encrypted::${iv.toString('base64')}:${encrypted}`,
                 )
               } else {
                 newFile.push(lines[line])
@@ -173,15 +173,15 @@ async function main() {
 
             if (action === 'decrypt') {
               if (value.startsWith('encrypted::')) {
-                const [ivHex, encrypted] = value
+                const [ivbase64, encrypted] = value
                   .replace('encrypted::', '')
                   .split(':')
                 const decipher = crypto.createDecipheriv(
                   'aes-256-cbc',
                   keyBuffer,
-                  Buffer.from(ivHex, 'hex'),
+                  Buffer.from(ivbase64, 'base64'),
                 )
-                let decrypted = decipher.update(encrypted, 'hex', 'utf8')
+                let decrypted = decipher.update(encrypted, 'base64', 'utf8')
                 decrypted += decipher.final('utf8')
                 newFile.push(`${key}=${decrypted}`)
               } else {

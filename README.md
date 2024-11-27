@@ -60,7 +60,7 @@ Example:
 HELLO=world
 
 # After running `commitsafe -e .env`
-HELLO=encrypted::U2FsdGVkX1/A1PgtAOSvOKQjs5CgGX+Y2gXGahVkgHc=
+HELLO=encrypted::8cwf0HbsXjaniUiCZ4EH+A==:7XMi+FfjoKu3b+q/lRNuwQ==
 
 # After running `commitsafe -d .env`
 HELLO=world
@@ -128,7 +128,7 @@ To automate the safe management of `.env` files using Git hooks, follow these st
    // In package.json
    {
      "scripts": {
-       "prepare": "bunx simple-git-hooks"
+       "prepare": "simple-git-hooks"
      },
      "lint-staged": {
        ".env": ["commitsafe -e"]

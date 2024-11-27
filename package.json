@@ -1,6 +1,6 @@
 {
   "name": "commitsafe",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "A powerful CLI tool that encrypts and decrypts .env files to protect your sensitive information during git commits. CommitSafe ensures that secrets remain secure and reduces the risk of accidental exposure in your repositories.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

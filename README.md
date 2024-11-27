@@ -1,6 +1,6 @@
 # commitsafe
 
-> A CLI tool designed to safeguard against accidentally exposing your secrets in `.env` files when committing to your repository.
+> A powerful CLI tool that encrypts and decrypts .env files to protect your sensitive information during git commits. CommitSafe ensures that secrets remain secure and reduces the risk of accidental exposure in your repositories.
 
 ![npm version](https://img.shields.io/npm/v/commitsafe)
 ![license](https://img.shields.io/npm/l/commitsafe)
@@ -9,7 +9,7 @@
 - **NPM Package:** [commitsafe](https://www.npmjs.com/package/commitsafe)
 - **GitHub Repository:** [nrjdalal/commitsafe](https://github.com/nrjdalal/commitsafe)
 
-## What's New in Version 2.0.0?
+## What's New in Version 2.3.0?
 
 - Enhanced Git hooks integration for seamless operation.
 - Transitioned encryption/decryption backend from `npm:crypto-js` to the efficient `node:crypto` module.

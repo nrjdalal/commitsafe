@@ -1,7 +1,7 @@
 {
   "name": "commitsafe",
   "version": "2.1.0",
-  "description": "commitsafe is a CLI tool to help you not to worry about exposing your secrets in your .env files when you commit them to your repository",
+  "description": "A powerful CLI tool that encrypts and decrypts .env files to protect your sensitive information during git commits. CommitSafe ensures that secrets remain secure and reduces the risk of accidental exposure in your repositories.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
@@ -14,7 +14,7 @@
     "test:decrypt": "bun run build && node dist/index.js -d .env .env.local",
     "list": "bun run build && node dist/index.js -l .env .env.local",
     "release": "bun run build && npx np --no-tests",
-    "prepare": "bunx simple-git-hooks > /dev/null 2>&1"
+    "prepare": "simple-git-hooks"
   },
   "files": [
     "dist"
@@ -44,7 +44,7 @@
     ]
   },
   "simple-git-hooks": {
-    "pre-commit": "bunx lint-staged --verbose && echo",
+    "pre-commit": "bunx lint-staged --verbose",
     "post-commit": "bun run test:decrypt"
   },
   "repository": {
@@ -63,6 +63,16 @@
     "env",
     "dotenv",
     "secrets",
-    "cli"
+    "cli",
+    "git-hooks",
+    "security",
+    "encryption",
+    "decryption",
+    "environment-variables",
+    "devops",
+    "CI/CD",
+    "secure",
+    "file-safety",
+    "crypto"
   ]
 }

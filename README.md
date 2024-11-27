@@ -2,7 +2,12 @@
 
 > A CLI tool designed to safeguard against accidentally exposing your secrets in `.env` files when committing to your repository.
 
+![npm version](https://img.shields.io/npm/v/commitsafe)
+![license](https://img.shields.io/npm/l/commitsafe)
+![downloads](https://img.shields.io/npm/dt/commitsafe)
+
 - **NPM Package:** [commitsafe](https://www.npmjs.com/package/commitsafe)
+- **GitHub Repository:** [nrjdalal/commitsafe](https://github.com/nrjdalal/commitsafe)
 
 ## What's New in Version 2.0.0?
 
